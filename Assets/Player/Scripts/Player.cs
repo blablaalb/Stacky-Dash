@@ -50,24 +50,24 @@ public class Player : MonoBehaviour
             _model.position = top.transform.position;
     }
 
-    // FIXME: add InputManager for TouchInput and KeyboardInput
-    internal void Update()
+
+    public void Left()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Physics.gravity = Vector3.forward * _gravity;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            Physics.gravity = Vector3.right * _gravity;
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            Physics.gravity = Vector3.left * _gravity;
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            Physics.gravity = -Vector3.forward * _gravity;
-        }
+        Physics.gravity = Vector3.left * _gravity;
+    }
+
+    public void Right()
+    {
+        Physics.gravity = Vector3.right * _gravity;
+    }
+
+    public void Forward()
+    {
+        Physics.gravity = Vector3.forward * _gravity;
+    }
+
+    public void Back()
+    {
+        Physics.gravity = -Vector3.forward * _gravity;
     }
 }
