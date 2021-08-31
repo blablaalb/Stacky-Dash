@@ -11,6 +11,8 @@ public class FinishLine : MonoBehaviour
     private Transform _end;
     [SerializeField]
     private GameObject _multiplierPrefab;
+    [SerializeField]
+    private GameObject _finishPrefab;
     private bool _finished;
     private CubeStack _cubeStack;
 
@@ -22,12 +24,18 @@ public class FinishLine : MonoBehaviour
     internal void OnTriggerEnter(Collider other)
     {
         if (_finished) return;
+
+        MultiplierTrack lastMultiplierTrack = null;
         if (other.gameObject.CompareTag(Player.Tag))
         {
-            var cnt = CalculateLength();
-            InstantiateMultiplierTracks(cnt);
             _finished = true;
+            var cnt = CalculateLength();
+            var tracks = InstantiateMultiplierTracks(cnt);
+            lastMultiplierTrack = tracks.Last();
         }
+
+        var finishPosition = lastMultiplierTrack.transform.position + lastMultiplierTrack.transform.forward * MultiplierTrack.Length;
+        InstantiateFinishPrefab(finishPosition);
     }
 
     private int CalculateLength()
@@ -36,24 +44,32 @@ public class FinishLine : MonoBehaviour
         return length;
     }
 
-    private Multiplier[] InstantiateMultiplierTracks(int count)
+    private MultiplierTrack[] InstantiateMultiplierTracks(int count)
     {
         var position = _end.position;
-        Multiplier[] tracks = new Multiplier[count];
+        MultiplierTrack[] tracks = new MultiplierTrack[count];
         for (int i = 0; i < count; i++)
         {
-            var multiplier = InstantiateMultiplierTrack(position);
-            int multiplierLength = 7;
-            position = multiplier.transform.position + multiplier.transform.forward * multiplierLength;
+            var track = InstantiateMultiplierTrack(position);
+            tracks[i] = track;
+            position = track.transform.position + track.transform.forward * MultiplierTrack.Length;
+            track.SetMultiplier(i);
         }
 
         return tracks;
     }
 
-    private Multiplier InstantiateMultiplierTrack(Vector3 position)
+    private MultiplierTrack InstantiateMultiplierTrack(Vector3 position)
     {
-        var multiplier = Instantiate<GameObject>(_multiplierPrefab).GetComponent<Multiplier>();
+        var multiplier = Instantiate<GameObject>(_multiplierPrefab).GetComponent<MultiplierTrack>();
         multiplier.transform.position = position;
         return multiplier;
+    }
+
+    private GameObject InstantiateFinishPrefab(Vector3 position)
+    {
+        var finish = Instantiate<GameObject>(_finishPrefab);
+        finish.transform.position = position;
+        return finish;
     }
 }

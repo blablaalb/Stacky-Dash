@@ -6,16 +6,16 @@ using Random = UnityEngine.Random;
 using Object = UnityEngine.Object;
 using UnityEditor;
 
-[CustomEditor(typeof(Multiplier))]
+[CustomEditor(typeof(MultiplierTrack))]
 public class MultiplierEditor : Editor
 {
     private int _paveCount;
-    private Multiplier _targetMultiplier;
+    private MultiplierTrack _targetMultiplier;
     private static GameObject[] _selectedGameObjects;
 
     public override void OnInspectorGUI()
     {
-        _targetMultiplier = target as Multiplier;
+        _targetMultiplier = target as MultiplierTrack;
 
         DrawDefaultInspector();
         _paveCount = EditorGUILayout.IntField("Pave Count", _paveCount);
@@ -26,11 +26,11 @@ public class MultiplierEditor : Editor
         }
     }
 
-    private Multiplier[] PaveMultipliers()
+    private MultiplierTrack[] PaveMultipliers()
     {
         int count = _paveCount;
-        Multiplier[] Multipliers = new Multiplier[count];
-        Multiplier Multiplier = _targetMultiplier;
+        MultiplierTrack[] Multipliers = new MultiplierTrack[count];
+        MultiplierTrack Multiplier = _targetMultiplier;
         for (int i = 0; i < count; i++)
         {
             Multiplier = Pave(Multiplier);
@@ -40,11 +40,11 @@ public class MultiplierEditor : Editor
         return Multipliers;
     }
 
-    private static Multiplier Pave(Multiplier after)
+    private static MultiplierTrack Pave(MultiplierTrack after)
     {
         var c = PrefabUtility.GetCorrespondingObjectFromSource(after.gameObject);
         var go = PrefabUtility.InstantiatePrefab(c, after.transform.parent) as GameObject;
-        Multiplier newMultiplier = go.GetComponent<Multiplier>();
+        MultiplierTrack newMultiplier = go.GetComponent<MultiplierTrack>();
         var position = after.transform.position;
         var rotation = after.transform.rotation;
         position += after.transform.forward * 7;

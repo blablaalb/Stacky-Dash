@@ -17613,6 +17613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _end: {fileID: 2601685496703438257}
   _multiplierPrefab: {fileID: 259195790064696325, guid: 3072184da6e0dab4b8120fd13c5f5621, type: 3}
+  _finishPrefab: {fileID: 4470129610484060456, guid: a03e96e5665d01f4a9d6f633087095b0, type: 3}
 --- !u!65 &7631433312366213141
 BoxCollider:
   m_ObjectHideFlags: 0
