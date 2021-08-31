@@ -11,6 +11,7 @@ public class CubeStack : MonoBehaviour
     private List<CollectableCube> _collection = new List<CollectableCube>();
 
     public ReadOnlyCollection<CollectableCube> Stack => new ReadOnlyCollection<CollectableCube>(_collection);
+    public int Count => _collection.Count;
     public event Action<CollectableCube> Added;
     public event Action<CollectableCube> Removed;
 

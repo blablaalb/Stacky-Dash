@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -7974158844966719018}
   m_Layer: 0
   m_Name: Bound Cube
-  m_TagString: Untagged
+  m_TagString: Bounds
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

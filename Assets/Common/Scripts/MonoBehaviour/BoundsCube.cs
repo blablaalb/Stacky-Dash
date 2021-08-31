@@ -11,10 +11,12 @@ public class BoundsCube : Cube
     private bool _visible = true;
     private MeshRenderer _meshRenderer;
 
+    public static string Tag => "Bounds";
+
     override protected void Awake()
     {
         _meshRenderer = GetComponentInChildren<MeshRenderer>();
         _meshRenderer.enabled = _visible;
-
+        gameObject.tag = Tag;
     }
 }
