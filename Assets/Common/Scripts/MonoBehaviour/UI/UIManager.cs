@@ -13,19 +13,43 @@ public class UIManager : MonoBehaviour
     private GameObject _failureImg;
     [SerializeField]
     private GameObject _continueBtn;
+    [SerializeField]
+    private TMPro.TextMeshProUGUI _gemsText;
 
     internal void Start()
     {
         LevelManager.Instance.LevelFinished += OnLevelFinished;
+        GemsManager.GemsAdded += OnGemsAdded;
+        GemsManager.GemsRemoved += OnGemsRemoved;
         _continueBtn.SetActive(false);
         _successImg.SetActive(false);
         _failureImg.SetActive(false);
+        UpdateGems();
     }
 
     internal void OnDestroy()
     {
         if (LevelManager.Instance)
             LevelManager.Instance.LevelFinished -= OnLevelFinished;
+
+        GemsManager.GemsAdded -= OnGemsAdded;
+        GemsManager.GemsRemoved -= OnGemsRemoved;
+    }
+
+    private void OnGemsAdded(int added)
+    {
+        UpdateGems();
+    }
+
+    private void OnGemsRemoved(int added)
+    {
+        UpdateGems();
+    }
+
+    private void UpdateGems()
+    {
+        int gems = GemsManager.Gems;
+        _gemsText.SetText(gems.ToString());
     }
 
     private void OnLevelFinished(FinishResult result)

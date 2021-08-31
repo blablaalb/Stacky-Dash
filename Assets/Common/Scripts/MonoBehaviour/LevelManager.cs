@@ -12,7 +12,32 @@ public class LevelManager : Singleton<LevelManager>
 
     public event Action<FinishResult> LevelFinished;
 
-    public void OnFinishedReached()
+    internal void Start()
+    {
+        CollectableCube.Collected += OnCubeCollected;
+        CollectableCube.Dropped += OnCubeLost;
+    }
+
+    override protected void OnDestroy()
+    {
+        CollectableCube.Collected -= OnCubeCollected;
+        CollectableCube.Dropped -= OnCubeLost;
+    }
+
+    private void OnCubeCollected(CollectableCube cube)
+    {
+        if (!FinishLine.Instance.Reached)
+            GemsManager.AddGems(1);
+    }
+
+    private void OnCubeLost(CollectableCube cube)
+    {
+        if (!FinishLine.Instance.Reached)
+            GemsManager.RemoveGems(1);
+    }
+
+
+    public void OnFinishReached()
     {
         if (_finished) return;
         LevelFinished?.Invoke(FinishResult.Won);

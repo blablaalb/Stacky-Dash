@@ -54,6 +54,10 @@ public class CubeEditor : Editor
         _selectedGameObjects = Selection.gameObjects;
         Selection.activeObject = newCube.gameObject;
         AddSelection(newCube.gameObject);
+        if (newCube is BoundsCube bc)
+        {
+            bc.Visible = ((BoundsCube)after).Visible;
+        }
         return newCube;
     }
 

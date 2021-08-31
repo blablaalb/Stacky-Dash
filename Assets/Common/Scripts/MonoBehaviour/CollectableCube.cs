@@ -17,6 +17,9 @@ public class CollectableCube : Cube
     private bool _collected;
     private MeshRenderer _meshRenderer;
 
+    public static event Action<CollectableCube> Collected;
+    public static event Action<CollectableCube> Dropped;
+
     override protected void Awake()
     {
         base.Awake();
@@ -34,14 +37,17 @@ public class CollectableCube : Cube
 
     private void Collect()
     {
-        if (!_collected)
+        if (_collected) return;
             _collected = _cubeStack.Add(this);
+            Collected?.Invoke(this);
     }
 
     public void Drop()
     {
+        if (!_collected) return;
         PlayDropAudio();
         ChangeMaterialToDrop();
+        Dropped?.Invoke(this);
     }
 
     private void ChangeMaterialToDrop()

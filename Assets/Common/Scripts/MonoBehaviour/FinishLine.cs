@@ -4,8 +4,9 @@ using System.Linq;
 using System;
 using Random = UnityEngine.Random;
 using Object = UnityEngine.Object;
+using Common;
 
-public class FinishLine : MonoBehaviour
+public class FinishLine : Singleton<FinishLine>
 {
     [SerializeField]
     private Transform _end;
@@ -13,29 +14,31 @@ public class FinishLine : MonoBehaviour
     private GameObject _multiplierPrefab;
     [SerializeField]
     private GameObject _finishPrefab;
-    private bool _finished;
     private CubeStack _cubeStack;
 
-    internal void Awake()
+    public bool Reached { get; private set; }
+
+    override protected void Awake()
     {
+        base.Awake();
         _cubeStack = FindObjectOfType<CubeStack>();
     }
 
     internal void OnTriggerEnter(Collider other)
     {
-        if (_finished) return;
+        if (Reached) return;
 
         MultiplierTrack lastMultiplierTrack = null;
         if (other.gameObject.CompareTag(Player.Tag))
         {
-            _finished = true;
+            Reached = true;
             var cnt = CalculateLength();
             var tracks = InstantiateMultiplierTracks(cnt);
             lastMultiplierTrack = tracks.Last();
-        }
 
-        var finishPosition = lastMultiplierTrack.transform.position + lastMultiplierTrack.transform.forward * MultiplierTrack.Length;
-        InstantiateFinishPrefab(finishPosition);
+            var finishPosition = lastMultiplierTrack.transform.position + lastMultiplierTrack.transform.forward * MultiplierTrack.Length;
+            InstantiateFinishPrefab(finishPosition);
+        }
     }
 
     private int CalculateLength()
